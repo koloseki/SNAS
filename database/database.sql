@@ -1,10 +1,10 @@
---Example structure how database may look
 
 CREATE TABLE articles (
                           id INT PRIMARY KEY AUTO_INCREMENT,
                           title VARCHAR(255) NOT NULL,
                           text TEXT NOT NULL,
-                          creation_date DATE NOT NULL
+                          created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                          updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE authors (
@@ -20,4 +20,4 @@ CREATE TABLE article_author (
 );
 
 -- Inserting example authors
-INSERT INTO authors (name) VALUES ('Autor 1'), ('Autor 2'), ('Autor 3');
+INSERT INTO authors (name) VALUES ('J.R.R. Tolkien'), ('H.P. Lovecraft'), ('Akira Toriyama');
