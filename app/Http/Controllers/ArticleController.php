@@ -43,4 +43,25 @@ class ArticleController extends Controller
         // Przekieruj użytkownika po dodaniu artykułu
         return redirect('/articles')->with('success', 'Article added successfully!');
     }
+    public function edit($id)
+    {
+        $article = Article::find($id);
+        return view('edit', ['article' => $article]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'title' => 'required|max:255',
+            'content' => 'required',
+        ]);
+
+        $article = Article::find($id);
+
+        $article->title = $validatedData['title'];
+        $article->text = htmlspecialchars($validatedData['content']);
+        $article->save();
+
+        return redirect('/articles')->with('success', 'Article updated successfully!');
+    }
 }
