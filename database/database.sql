@@ -20,4 +20,4 @@ CREATE TABLE article_author (
 );
 
 -- Inserting example authors
-INSERT INTO authors (name) VALUES ('J.R.R. Tolkien'), ('H.P. Lovecraft'), ('Akira Toriyama');
+INSERT INTO authors (name) VALUES ('J.R.R. Tolkien'), ('H.P. Lovecraft'), ('Akira Toriyama'),('Kentarō Miura'),('Fyodor Dostoevsky'),('Mary Shelley');
