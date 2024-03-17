@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Models\Author;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class ArticleController extends Controller
 {
@@ -22,7 +24,6 @@ class ArticleController extends Controller
 
     public function store(Request $request)
     {
-        // Walidacja danych z formularza
         $validatedData = $request->validate([
             'title' => 'required|max:255',
             'content' => 'required',
@@ -30,7 +31,6 @@ class ArticleController extends Controller
             'authors.*' => 'exists:authors,id',
         ]);
 
-        // Zapisz artykuł do bazy danych
         $article = new Article();
         $article->title = $validatedData['title'];
         $article->text = htmlspecialchars($validatedData['content']);
@@ -40,7 +40,6 @@ class ArticleController extends Controller
         $article->authors()->sync($validatedData['authors']);
 
 
-        // Przekieruj użytkownika po dodaniu artykułu
         return redirect('/articles')->with('success', 'Article added successfully!');
     }
     public function edit($id)
@@ -63,5 +62,44 @@ class ArticleController extends Controller
         $article->save();
 
         return redirect('/articles')->with('success', 'Article updated successfully!');
+    }
+
+    public function showApi($id)
+    {
+        $article = Article::with('authors')->find($id);
+
+        if ($article) {
+            return response()->json($article);
+        } else {
+            return response()->json(['error' => 'Article not found'], 404);
+        }
+    }
+
+    public function articlesByAuthor($id)
+    {
+        $author = Author::find($id);
+
+        if ($author) {
+            $articles = $author->articles;
+            return response()->json($articles);
+        } else {
+            return response()->json(['error' => 'Author not found'], 404);
+        }
+    }
+
+    public function topAuthors()
+    {
+        $oneWeekAgo = Carbon::now()->subWeek();
+
+        $topAuthors = DB::table('articles')
+            ->join('article_author', 'articles.id', '=', 'article_author.article_id')
+            ->select('article_author.author_id', DB::raw('count(*) as total_articles'))
+            ->where('articles.created_at', '>', $oneWeekAgo)
+            ->groupBy('article_author.author_id')
+            ->orderBy('total_articles', 'desc')
+            ->take(3)
+            ->get();
+
+        return response()->json($topAuthors);;
     }
 }
