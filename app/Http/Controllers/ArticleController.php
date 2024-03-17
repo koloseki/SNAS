@@ -93,13 +93,14 @@ class ArticleController extends Controller
 
         $topAuthors = DB::table('articles')
             ->join('article_author', 'articles.id', '=', 'article_author.article_id')
-            ->select('article_author.author_id', DB::raw('count(*) as total_articles'))
+            ->join('authors', 'article_author.author_id', '=', 'authors.id')
+            ->select('authors.name', DB::raw('count(*) as total_articles'))
             ->where('articles.created_at', '>', $oneWeekAgo)
-            ->groupBy('article_author.author_id')
+            ->groupBy('authors.name')
             ->orderBy('total_articles', 'desc')
             ->take(3)
             ->get();
 
-        return response()->json($topAuthors);;
+        return response()->json($topAuthors);
     }
 }
