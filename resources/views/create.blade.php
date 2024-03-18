@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <title>New Article</title>
     @vite('resources/css/app.css')
+    @vite('resources/js/app.js')
 </head>
 <body class="flex flex-col  items-center justify-center bg-gray-50">
 <div class="p-3 mt-12 sm:w-4/5 h-auto">

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <title>Edit Article</title>
     @vite('resources/css/app.css')
 </head>
