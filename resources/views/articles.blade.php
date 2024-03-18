@@ -13,7 +13,7 @@
     @foreach($articles as $article)
         <div class="my-8 bg-white p-6 rounded shadow">
             <div class="flex space-x-3">
-                <h2 class="text-2xl font-bold mb-2">{{ $article->title }}</h2>
+                <a href="/api/article/{{ $article->id }}" class="text-2xl font-bold mb-2">{{ $article->title }}</a>
                 <a href="/edit/{{ $article->id }}" class="flex-grow-0 border px-4 text-gray-600 inline-block text-center rounded flex items-center transform hover:bg-gray-100">Edit</a>
             </div>
             <p class="text-gray-700">{{ $article->text }}</p>
